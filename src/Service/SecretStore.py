@@ -7,4 +7,8 @@ from src.Mongo.SecretCollection import SecretCollection
 class SecretStore(SecretStoreServicer):
 
     def GetSecret(self, request: SecretName, context):
-        return SecretValue(value=SecretCollection.get_secret(request.name))
+        try:
+            return SecretValue(value=SecretCollection.get_secret(request.name))
+        except Exception as e:
+            print(e)
+            return SecretValue(value="")

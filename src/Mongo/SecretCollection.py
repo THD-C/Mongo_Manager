@@ -1,4 +1,5 @@
 from src.Mongo.connection import client, DATABASE_NAME
+import logging
 
 
 class SecretCollection:
@@ -7,6 +8,7 @@ class SecretCollection:
 
     @staticmethod
     def get_secret(secret_name: str) -> str:
+        logging.info(f"Getting secret: {secret_name}")
         projection = {secret_name: 1}
         data: dict = (
             client.get_database(DATABASE_NAME)
