@@ -7,4 +7,4 @@ __LOCALHOST_MONGO = "mongodb://localhost/THDC"
 
 connection_string = os.getenv("MONGO_URL", __LOCALHOST_MONGO)
 
-client = MongoClient(__LOCALHOST_MONGO)
+client = MongoClient(connection_string)
