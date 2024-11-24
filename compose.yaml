@@ -14,11 +14,14 @@ services:
       - MO-Data:/data/db
 
   Mongo_Manager:
-    build: Dockerfile
+    build: 
+      dockerfile: Dockerfile
     image: thd/mongo_manager
     container_name: THD_Mongo_Manager
     hostname: Mongo_Manager
     restart: unless-stopped
+    environment:
+      - MONGO_URL=mongodb://Mongo/THDC
     ports:
       - 50052:50051
     depends_on:
