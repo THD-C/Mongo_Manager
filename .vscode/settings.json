@@ -1,0 +1,30 @@
+{
+    "cSpell.words": [
+        "autoflush",
+        "autouse",
+        "dotenv",
+        "eralchemy",
+        "fastapi",
+        "Instrumentor",
+        "opentelemetry",
+        "OTEL",
+        "OTLP",
+        "proto",
+        "protobuf",
+        "pydantic",
+        "pymongo",
+        "sessionmaker",
+        "SFIXED",
+        "sqlalchemy",
+        "sqlmodel",
+        "thdc",
+        "thdcgrpc",
+        "uvicorn",
+        "verceldb"
+    ],
+    "python.testing.pytestArgs": [
+      "tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
+  }
