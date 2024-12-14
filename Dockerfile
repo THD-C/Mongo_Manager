@@ -1,5 +1,7 @@
 FROM python:3.12
 
+ENV MONGO_URL="Mongo"
+
 COPY ./ /code/app
 
 WORKDIR /code/app
