@@ -12,6 +12,11 @@ services:
       - 27017:27017 
     volumes:
       - MO-Data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
 
   Mongo_Manager:
     build: 
@@ -26,7 +31,7 @@ services:
       - 50052:50051
     depends_on:
       Mongo:
-        condition: service_started
+        condition: service_healthy
 
 secrets:
   github_token:
