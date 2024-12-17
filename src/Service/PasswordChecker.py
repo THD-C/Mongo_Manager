@@ -3,6 +3,7 @@ from password.password_pb2 import CheckResponse, PasswordMessage
 
 from src.Mongo.PasswordsCollection import PasswordCollection
 
+
 class PasswordChecker(PasswordCheckerServicer):
     def CheckPassword(self, request: PasswordMessage, context):
         password = request.password
