@@ -9,7 +9,7 @@
             "console": "integratedTerminal",
         },
         {
-            "preLaunchTask": "download_thdcgrpc",
+            "preLaunchTask": "download gRPC",
             "name": "Mongo_Manager",
             "type": "debugpy",
             "request": "launch",
