@@ -1,4 +1,4 @@
-name: Create Release
+name: Release Service
 
 on:
   push:
@@ -19,5 +19,3 @@ jobs:
     secrets: inherit
     with:
       ServiceRepository: ${{ github.repository }}
-
-    
