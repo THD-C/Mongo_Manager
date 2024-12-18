@@ -7,6 +7,9 @@ on:
       - '**/*.py'
       - requirements.txt
 
+  workflow_dispatch:
+  
+
 permissions:
   contents: write
 
@@ -14,4 +17,7 @@ jobs:
   Release:
     uses: THD-C/GH_Actions/.github/workflows/release.yml@main
     secrets: inherit
+    with:
+      ServiceRepository: ${{ github.repository }}
+
     
