@@ -12,7 +12,7 @@ class CurrencyCollection:
         data: dict = (
             client.get_database(DATABASE_NAME)
             .get_collection(CurrencyCollection.__collection)
-            .find_one({CurrencyCollection.__currency_name_field: currency})
+            .find_one({CurrencyCollection.__currency_name_field: currency.lower()})
         )
         return data.get(CurrencyCollection.__currency_type_field, None)
 
