@@ -14,7 +14,9 @@ class CurrencyCollection:
             .get_collection(CurrencyCollection.__collection)
             .find_one({CurrencyCollection.__currency_name_field: currency.lower()})
         )
-        return data.get(CurrencyCollection.__currency_type_field, None)
+        if data:
+            return data.get(CurrencyCollection.__currency_type_field, None)
+        return None
 
     @staticmethod
     def get_currency_list(currency_type: int) -> list[str]:
