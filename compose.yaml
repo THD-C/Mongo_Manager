@@ -29,6 +29,12 @@ services:
       - MONGO_URL=mongodb://Mongo/THDC
     ports:
       - 50052:50051
+    healthcheck:
+      test: ["CMD", "python", "HealthCheck.py"]
+      interval: 30s          
+      timeout: 5s            
+      retries: 3             
+      start_period: 5s       
     depends_on:
       Mongo:
         condition: service_healthy
