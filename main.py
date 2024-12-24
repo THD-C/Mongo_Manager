@@ -1,5 +1,6 @@
 from concurrent import futures
 import grpc
+from grpc_health.v1 import health, health_pb2, health_pb2_grpc
 from grpc_reflection.v1alpha import reflection
 import secret.secret_pb2_grpc as secret_pb2_grpc
 import secret.secret_pb2 as secret_pb2
@@ -14,6 +15,7 @@ from prometheus_client import start_http_server
 
 import src.Service as Service
 import src.Utils.OpenTelemetry.OpenTelemetry as oTEL
+from src.config import SERVICE_NAME
 
 
 def main() -> None:
@@ -27,6 +29,10 @@ def main() -> None:
         Service.PasswordChecker(), server
     )
     currency_pb2_grpc.add_CurrencyServicer_to_server(Service.Currency(), server)
+
+    health_servicer = health.HealthServicer()
+    health_pb2_grpc.add_HealthServicer_to_server(health_servicer, server)
+    health_servicer.set(SERVICE_NAME, health_pb2.HealthCheckResponse.SERVING)
 
     # Enable reflection
     SERVICE_NAMES = (
