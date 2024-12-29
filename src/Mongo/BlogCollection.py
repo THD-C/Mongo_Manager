@@ -1,3 +1,4 @@
+from pymongo.errors import CollectionInvalid
 from src.Mongo.connection import client, DATABASE_NAME
 from pydantic import BaseModel, Field
 
@@ -29,6 +30,14 @@ class BlogSearch(BaseModel):
 class BlogCollection:
 
     __collection = "Blog"
+
+    @staticmethod
+    def create_collection_if_not_exists():
+        db = client.get_database(DATABASE_NAME)
+        try:
+            db.create_collection(BlogCollection.__collection)
+        except CollectionInvalid:
+            print("Collection already exists")
 
     @staticmethod
     def get_blog(filter: BlogSearch) -> Blog:
@@ -103,3 +112,6 @@ class BlogCollection:
             return None
 
         return blog_entry
+
+
+BlogCollection.create_collection_if_not_exists()
