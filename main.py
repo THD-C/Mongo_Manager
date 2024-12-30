@@ -31,7 +31,7 @@ def main() -> None:
         Service.PasswordChecker(), server
     )
     currency_pb2_grpc.add_CurrencyServicer_to_server(Service.Currency(), server)
-    blog_pb2_grpc.add_BlogServiceServicer_to_server(Service.BlogService(), server)
+    blog_pb2_grpc.add_BlogServicer_to_server(Service.BlogService(), server)
 
     health_servicer = health.HealthServicer()
     health_pb2_grpc.add_HealthServicer_to_server(health_servicer, server)
