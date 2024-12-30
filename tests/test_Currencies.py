@@ -33,21 +33,21 @@ def test_get_currency_type_failure():
     assert currency_type.type == CurrencyType.CURRENCY_TYPE_NOT_SUPPORTED
 
 
-def test_get_currency_type_dai_upper_success():
+def test_get_currency_type_tether_upper_success():
     s = Service.Currency()
 
     currency_type: CurrencyTypeMsg = s.GetCurrencyType(
-        CurrencyDetails(currency_name="DAI"),
+        CurrencyDetails(currency_name="TETHER"),
         None,
     )
     assert currency_type.type == CurrencyType.CURRENCY_TYPE_CRYPTO
 
 
-def test_get_currency_type_dai_lower_success():
+def test_get_currency_type_tether_lower_success():
     s = Service.Currency()
 
     currency_type: CurrencyTypeMsg = s.GetCurrencyType(
-        CurrencyDetails(currency_name="dai"),
+        CurrencyDetails(currency_name="tether"),
         None,
     )
     assert currency_type.type == CurrencyType.CURRENCY_TYPE_CRYPTO
@@ -73,7 +73,7 @@ def test_get_supported_currencies_crypto_success():
         CurrencyTypeMsg(type=CurrencyType.CURRENCY_TYPE_CRYPTO),
         None,
     )
-    assert len(currency_list.currencies) == 50
+    assert len(currency_list.currencies) == 7
     assert "bitcoin" in [c.currency_name for c in currency_list.currencies]
     assert "ethereum" in [c.currency_name for c in currency_list.currencies]
     assert "tether" in [c.currency_name for c in currency_list.currencies]

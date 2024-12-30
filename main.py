@@ -8,6 +8,8 @@ import password.password_pb2_grpc as password_pb2_grpc
 import password.password_pb2 as password_pb2
 import currency.currency_pb2_grpc as currency_pb2_grpc
 import currency.currency_pb2 as currency_pb2
+import blog.blog_pb2_grpc as blog_pb2_grpc
+import blog.blog_pb2 as blog_pb2
 
 from opentelemetry.instrumentation.grpc import GrpcInstrumentorServer
 from py_grpc_prometheus.prometheus_server_interceptor import PromServerInterceptor
@@ -29,6 +31,7 @@ def main() -> None:
         Service.PasswordChecker(), server
     )
     currency_pb2_grpc.add_CurrencyServicer_to_server(Service.Currency(), server)
+    blog_pb2_grpc.add_BlogServiceServicer_to_server(Service.BlogService(), server)
 
     health_servicer = health.HealthServicer()
     health_pb2_grpc.add_HealthServicer_to_server(health_servicer, server)
@@ -39,6 +42,7 @@ def main() -> None:
         secret_pb2.DESCRIPTOR.services_by_name["SecretStore"].full_name,
         password_pb2.DESCRIPTOR.services_by_name["PasswordChecker"].full_name,
         currency_pb2.DESCRIPTOR.services_by_name["Currency"].full_name,
+        blog_pb2.DESCRIPTOR.services_by_name["Blog"].full_name,
         reflection.SERVICE_NAME,
     )
     reflection.enable_server_reflection(SERVICE_NAMES, server)
