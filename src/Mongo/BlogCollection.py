@@ -3,7 +3,6 @@ from pydantic import BaseModel, Field, field_validator
 import string
 
 from src.Mongo.connection import client, DATABASE_NAME
-from src.Utils.OpenTelemetry.TraceMeta import TraceMeta
 
 PATH_ALLOWED_CHARS = string.ascii_lowercase + string.digits + "-"
 
@@ -21,6 +20,24 @@ class Blog(BaseModel):
     @field_validator("language")
     def language_validator(cls, value: str):
         return language_post_init(cls, value)
+
+    def __eq__(self, other):
+        if not isinstance(other, Blog):
+            return False
+
+        if self.path != other.path:
+            return False
+
+        if self.language != other.language:
+            return False
+
+        if self.title != other.title:
+            return False
+
+        if self.content != other.content:
+            return False
+
+        return True
 
     def generate_path(self):
         if self.path is not None:
@@ -92,7 +109,7 @@ def language_post_init(cls, value: str):
     return value.lower()
 
 
-class BlogCollection(metaclass=TraceMeta):
+class BlogCollection:
 
     __collection = "Blog"
 
@@ -160,9 +177,16 @@ class BlogCollection(metaclass=TraceMeta):
         try:
             client.get_database(DATABASE_NAME).get_collection(
                 BlogCollection.__collection
-            ).delete_one(filter.model_dump())
+            ).delete_one(blog_entry.model_dump())
         except Exception as e:
             print(e)
+            return None
+
+        blog_list: list[Blog] = BlogCollection.get_blog(
+            search, exclude_title_check=True
+        )
+
+        if blog_list or len(blog_list) != 0:
             return None
 
         return blog_entry
@@ -172,18 +196,32 @@ class BlogCollection(metaclass=TraceMeta):
 
         search = BlogSearch(**blog_entry.model_dump())
 
-        if not BlogCollection.get_blog(search, exclude_title_check=True):
+        blog_list: list[Blog] = BlogCollection.get_blog(
+            search, exclude_title_check=True
+        )
+
+        if not blog_list or len(blog_list) != 1:
             return None
 
         try:
             client.get_database(DATABASE_NAME).get_collection(
                 BlogCollection.__collection
-            ).update_one(search.model_dump(), {"$set": blog_entry.model_dump()})
+            ).update_one(
+                search.get_mongo_filter(exclude_title=True),
+                {"$set": blog_entry.model_dump()},
+            )
         except Exception as e:
             print(e)
             return None
 
-        return blog_entry
+        blog_list: list[Blog] = BlogCollection.get_blog(
+            search, exclude_title_check=True
+        )
+
+        if not blog_list[0] == blog_entry:
+            return None
+
+        return blog_list[0]
 
 
 BlogCollection.create_collection_if_not_exists()
